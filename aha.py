@@ -145,7 +145,7 @@ class workThread(QThread): # 主进程类
                             pass # 称重（待写）D03
                         self.switch_TDO1.check_on() #检查TD01\TDO2的状态
                         self.switch_TD02.check_on()
-                        time_flag = False#啥意思
+                        time_flag = False#
                         if self.switch_TDO1.state == 1 or self.switch_TD02.state == 1: # 不满足皆不触发的条件
                             if self.switch_TDO1.state == 1 and self.switch_TD02.state == 1: # 如果皆触发
                                 time_end = time.time()    #结束计时
@@ -159,27 +159,56 @@ class workThread(QThread): # 主进程类
                                         self.switch_TDO1.check_on() 
                                         self.switch_TD02.check_on()
                                         if
+
                         if time_flag = True:
                             self.motor_D03.reverse()  #D03电机反转
                             self.switch_D10.state = 0 # 开关D10关，state=0
-                            #----上传投递信息
-                            self.switch_TDO9.state = 1#TD09触发
-                              if self.switch_TDO9.state == 1:#如果TD09触发
+                            self.switch_TD09.check_on() #检查TD09状态
+                            # time_start2 = time.time() #开始计时
+                            if self.switch_TD09.check_on == 0:#如果TD09没有触发
+                                time_c2 = 0
+                                while time_c2 < 5:
+                                    time.sleep(1)#休眠一秒
+                                    time_c2 += 1
+                                     if self.switch_TD09.check_on() == 1:
+                                         break
+                                self.motor_D03.stop() #D03电机停止
+                                DO3 = 0 
+                                if time_c2 >= 5                                       # 
+                                    pass#----上传故障信息
+                            if self.switch_TD09.check_on() == 1:#如果TD09触发
                                  self.motor_D03.stop() #D03电机停止
+                                 DO3 = 0
+                            if DO3 == 0:
+                                self.switch_TDO5.check_on() #检查TD05\TDO6\TD07的状态
+                                self.switch_TD06.check_on()
+                                self.switch_TD07.check_on()
+                                if self.switch_TDO5.check_on() == 0 and self.switch_TD06.check_on() == 0 and self.switch_TD07.check_on()==0:#如果TDO5、TD06、TD07皆未触发
+                                    #等待下一个投递（待写）
+                                else:
+                                self.motor_D02.forward()#电机D02正转
+                                self.switch_TD11.check_on()#检查TD11的状态
+                                if self.switch_TD11.check_on == 0:#如果TD11没有触发
+                                    time_c3 = 0
+                                    while time_c3 < 20:
+                                        time.sleep(1)#休眠一秒
+                                        time_c2 += 1
+                                        if self.switch_TD11.check_on == 1:
+                                            break
+                                    self.motor_D02.stop() #D03电机停止
+                                    DO2 = 0
+                                    if time_c3 >= 20                                       # 
+                                        pass#上传压缩故障信息（待写）
+                                if self.switch_TD11.check_on == 1:#如果TD11触发
+                                    self.motor_D02.stop() #D02电机停止
+                                    DO2 = 0    
+                                if DO2 == 0：
+                                    self.motor_D01.forward()#电机D01正转
+                                    self.switch_TD03.check_on()#检查TD03状态
+                                        if self.switch_TD03.check_on() == 1#若果TD03触发
+                                            self.motor_D01.stop()#电机D01停止
+                                            time.sleep(5)#休眠5秒，也就是电机D01停止5秒
 
-                                 self.switch_TDO5.check_on() #检查TD05\TDO6TD07的状态
-                                 self.switch_TD06.check_on()
-                                 self.switch_TD07.check_on()
-                                  if self.switch_TDO5.check_on() == 0 and self.switch_TD06.check_on() == 0 and self.switch_TD07.check_on()==0:
-                                        #等待下一个投递
-                                    else:
-                                        self.motor_D02.forward()
-                                        self.switch_TDO11.state = 1
-                                        if self.switch_TDO11.state == 1：
-                                           self.motor_D02.stop()#
-                                           self.motor_D01.forward()
-                                           self.sw
-                                           if 
 
 
 
